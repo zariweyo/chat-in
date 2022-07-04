@@ -17,6 +17,12 @@ class ChatUpdateMessages extends ChatEvent {
   ChatUpdateMessages(this.messages) : super([messages]);
 }
 
+class ChatEditMessageEvent extends ChatEvent {
+  final ChatMessage message;
+
+  ChatEditMessageEvent(this.message) : super([message]);
+}
+
 class ChatIWritingMessage extends ChatEvent {
   final bool isWriting;
 
@@ -52,4 +58,10 @@ class ChatSetDateTimeEvent extends ChatEvent {
   final DateTime dateTime;
 
   ChatSetDateTimeEvent(this.dateTime) : super([dateTime]);
+}
+
+class ChatSaveMessageEvent extends ChatEvent {
+  final ChatMessage message;
+
+  ChatSaveMessageEvent(this.message) : super([message]);
 }

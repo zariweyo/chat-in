@@ -94,7 +94,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/back1.png
+    - assets/images/todo_back.png
     - assets/icons/todo_logo.png
 
   # To add assets to your application, add an assets section, like this:

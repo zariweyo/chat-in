@@ -11,8 +11,9 @@ abstract class ChatState{
 class ChatInitialState extends ChatState {
   final PersonUser localPerson;
   final PersonUser remotePerson;
+  final Chat chat;
 
-  ChatInitialState(this.localPerson, this.remotePerson): super([localPerson, remotePerson]);
+  ChatInitialState(this.chat, this.localPerson, this.remotePerson): super([chat, localPerson, remotePerson]);
 }
 
 class ChatMessagesLoading extends ChatState {}
@@ -45,4 +46,16 @@ class ChatSetDateTimeState extends ChatState {
   final DateTime dateTime;
 
   ChatSetDateTimeState(this.dateTime) : super([dateTime]);
+}
+
+class ChatEditMessageState extends ChatState{
+  final ChatMessage message;
+
+  ChatEditMessageState(this.message) : super([message]);
+}
+
+class ChatSaveMessageState extends ChatState{
+  final ChatMessage message;
+
+  ChatSaveMessageState(this.message) : super([message]);
 }

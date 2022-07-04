@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:chatin/module_chat/index.dart';
-import 'package:chatin/module_common/models/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,33 +15,23 @@ class ChatHeader extends StatefulWidget{
 }
 
 class _ChatHeaderState extends State<ChatHeader>{
-  PersonUser remotePerson = PersonUser(id: '');
+  late Chat chat;
   late StreamSubscription subscription;
 
   @override
   void initState() {
 
     if(BlocProvider.of<ChatBloc>(context).state is ChatInitialState){
-      remotePerson = (BlocProvider.of<ChatBloc>(context).state as ChatInitialState).remotePerson;
+      chat = (BlocProvider.of<ChatBloc>(context).state as ChatInitialState).chat;
     }
     
     super.initState();
   }
 
-  @override
-  didUpdateWidget(ChatHeader oldWidget){
-
-    if(BlocProvider.of<ChatBloc>(context).state is ChatMessagesPersonReloaded){
-      remotePerson = (BlocProvider.of<ChatBloc>(context).state as ChatMessagesPersonReloaded).person;
-    }
-
-    super.didUpdateWidget(oldWidget);
-  }
-
   _name(){
     return Container(
       margin: const EdgeInsets.only(left:10),
-      child:AutoSizeText(remotePerson.name??="",
+      child:AutoSizeText(chat.name,
         maxLines: 2,
         style: const TextStyle(
           color:Colors.black
@@ -52,7 +41,7 @@ class _ChatHeaderState extends State<ChatHeader>{
   }
 
   _lastConnected(){
-    Duration durationLastConnected = DateTime.now().difference(remotePerson.updated.toLocal());
+    Duration durationLastConnected = DateTime.now().difference(chat.lastMessageTime.toLocal());
     String text = "";
     if(durationLastConnected.inDays>30){
       text = AppLocalizations.of(context)!.viewed_more_than_a_lot;

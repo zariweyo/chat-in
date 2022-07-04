@@ -12,7 +12,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   late String message="";
   StreamSubscription<ReceiveDataState>? onReceiveDataSuscription;
 
-  ChatBloc(Chat chat, PersonUser localPerson, PersonUser remotePerson) : super(ChatInitialState(localPerson, remotePerson)){
+  ChatBloc(Chat chat, PersonUser localPerson, PersonUser remotePerson) : super(ChatInitialState(chat, localPerson, remotePerson)){
     chatRoomController = ChatRoomController(
       chat: chat,
       remotePerson: remotePerson);
@@ -50,6 +50,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       emit(ChatSetDateTimeState(event.dateTime));
     }else if (event is ChatMessageDeleteEvent) {
       chatRoomController.deleteMessage(event.messageId);
+    }else if (event is ChatEditMessageEvent) {
+      emit(ChatEditMessageState(event.message));
+    }else if (event is ChatSaveMessageEvent) {
+      chatRoomController.updateMessage(event.message);
+      emit(ChatSaveMessageState(event.message));
     }
   }
 

@@ -51,7 +51,7 @@ class _ChatsListInfoState extends State<ChatsListInfo> {
               !isEdit?
                 InkWell(
                   child: AutoSizeText(currentchat.name,
-                    maxLines: 1,
+                    maxLines: 3,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
@@ -68,6 +68,7 @@ class _ChatsListInfoState extends State<ChatsListInfo> {
                     Expanded(
                       child: TextField(
                         controller: controller,
+                        maxLines: 3,
                         onChanged: (newName) {
                           currentchat.name = newName;
                         },

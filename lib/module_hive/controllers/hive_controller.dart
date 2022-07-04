@@ -87,6 +87,10 @@ class HiveController{
     return chatBox.put(chat.id,chat);
   }
 
+  Future<void> updateMessage(ChatMessage message) {
+    return chatMessageBox.put(message.id,message);
+  }
+
   void deleteMessage(Chat chat,String id) async{
     ChatMessageHive? chatMessage = chatMessageBox.get(id);
     if(chatMessage != null){

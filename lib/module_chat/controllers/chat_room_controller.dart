@@ -46,12 +46,23 @@ class ChatRoomController{
     hiveController.deleteMessage(chat,id);
   }
 
+  updateMessage(ChatMessage message){
+    hiveController.updateMessage(message);
+  }
+
 
   ValueStream<ReceiveDataState> get onReceiveDataState => receiveDataState.stream;
 
   onMessageReceived(ChatMessage message){
-    _messages.add(message);
-    receiveDataState.add(ReceiveDataState.newMessage);
+    
+    int index = _messages.indexWhere((element) => element.id==message.id);
+    if(index<0){
+      _messages.add(message);
+      receiveDataState.add(ReceiveDataState.newMessage);
+    }else{
+      _messages[index] = message;
+      //receiveDataState.add(ReceiveDataState.updateMessage);
+    }
   }
 
   destroy(){

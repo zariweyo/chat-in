@@ -30,9 +30,9 @@ class _ChatsListState extends State<ChatsList>{
         child: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/icons/todo_logo.png"),
+                  image: AssetImage("assets/images/todo_back.png"),
                   fit: BoxFit.scaleDown,
-                  opacity: 0.1),
+                  opacity: 0.3),
             ),
             child: const ChatsListRoot()
         )

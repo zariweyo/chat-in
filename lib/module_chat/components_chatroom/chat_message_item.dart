@@ -155,8 +155,8 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.message.message,
-            textAlign: TextAlign.left,
+          ChatMessageText(
+            message: widget.message,
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -189,12 +189,22 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
             BlocProvider.of<ChatBloc>(context).add(ChatMessageDeleteEvent(widget.message.id));
           }
         ),
-        children: const [
+        children: [
           SlidableAction(
-            onPressed: null,
+            onPressed: (ctx) {
+              //BlocProvider.of<ChatBloc>(context).add(ChatMessageDeleteEvent(widget.message.id));
+            },
             backgroundColor: Colors.transparent,
-            foregroundColor: Colors.grey,
-            icon: Icons.favorite_rounded
+            foregroundColor: Colors.red,
+            icon: Icons.device_unknown
+          ),
+          SlidableAction(
+            onPressed: (ctx) {
+              BlocProvider.of<ChatBloc>(context).add(ChatEditMessageEvent(widget.message));
+            },
+            backgroundColor: Colors.transparent,
+            foregroundColor: Colors.black,
+            icon: Icons.edit
           )
         ],
       ),
