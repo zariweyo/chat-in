@@ -29,7 +29,9 @@ class _ChatHeaderState extends State<ChatListHeader>{
         const Expanded(
           child: Text("TO-DO")
         ),
-        IconButton(onPressed: addNewList, icon: const Icon(Icons.add_circle))
+        IconButton(
+          onPressed: addNewList, 
+          icon: const Icon(Icons.add_circle))
         //_buttonClean()
       ]
     );

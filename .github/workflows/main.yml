@@ -33,7 +33,7 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.0.1'
-      - run: mkdir keys; echo $KEY_JKS | base64 -d > keys/rickandmorty.keystore
+      - run: mkdir keys; echo $KEY_JKS | base64 -d > keys/chatin.keystore
       - run: echo $KEY_JKS
       - run: flutter pub get
       - run: flutter analyze

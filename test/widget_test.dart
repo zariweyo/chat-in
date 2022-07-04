@@ -7,24 +7,39 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:hive_test/hive_test.dart';
+import 'package:mockito/mockito.dart';
 
-import 'package:chatin/main.dart';
+import 'mock_my_app.dart';
+import 'mock_start_app.dart';
 
+class MockBuildContext extends Mock implements BuildContext {}
+
+@GenerateMocks([])
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  late MockBuildContext mockContext;
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  setUpAll(() {
+    mockContext = MockBuildContext();
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+  setUp(() async {
+    await setUpTestHive();
+    await MockStartApp.registers(mockContext);
+  });
+  
+  testWidgets('Add new list', (WidgetTester tester) async {
+        
+    await tester.pumpWidget(const MockMyApp());
+
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining("NEW"), findsNothing);
+
+    await tester.tap(find.byIcon(Icons.add_circle));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.textContaining("NEW"), findsOneWidget);
   });
 }

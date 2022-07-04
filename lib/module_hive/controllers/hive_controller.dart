@@ -5,6 +5,7 @@ import 'package:chatin/module_hive/adapters/chat_hive.dart';
 import 'package:chatin/module_hive/adapters/chat_message_hive.dart';
 import 'package:chatin/module_hive/adapters/chat_metadata_hive.dart';
 import 'package:chatin/repositories/personuser_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -30,12 +31,18 @@ class HiveController{
   final PersonUser localPerson = GetIt.I.get<PersonUserRepository>().user;
 
   init() async{
+    await Hive.initFlutter();
+    await loadAdapters();
+    await loadChatBoxes();
+  }
+
+  @visibleForTesting
+  initTest() async{
     await loadAdapters();
     await loadChatBoxes();
   }
 
   Future<void> loadAdapters() async{
-    await Hive.initFlutter();
     Hive.registerAdapter(ChatHiveAdapter());
     Hive.registerAdapter(ChatMetadataHiveAdapter());
     Hive.registerAdapter(ChatMessageHiveAdapter());
