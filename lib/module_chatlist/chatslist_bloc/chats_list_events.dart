@@ -1,7 +1,7 @@
 import 'package:chatin/module_chat/index.dart';
 import 'package:chatin/module_common/models/index.dart';
-import 'package:flutter/foundation.dart';
 import 'package:chatin/module_chatlist/models/index.dart';
+import 'package:flutter/material.dart';
 
 @immutable
 abstract class ChatsListEvent {
@@ -20,6 +20,17 @@ class ChatsListEditEvent extends ChatsListEvent {
 class ChatsListSaveEvent extends ChatsListEvent {
   final Chat chat;
   ChatsListSaveEvent(this.chat) : super([chat]);
+}
+
+class ChatsListDeleteEvent extends ChatsListEvent {
+  final Chat chat;
+  ChatsListDeleteEvent(this.chat) : super([chat]);
+}
+
+class ChatsListModalChatEvent extends ChatsListEvent {
+  final BuildContext context;
+  final Chat chat;
+  ChatsListModalChatEvent(this.context, this.chat) : super([context, chat]);
 }
 
 class ChatsListSetUsers extends ChatsListEvent {

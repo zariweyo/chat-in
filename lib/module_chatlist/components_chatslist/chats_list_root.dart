@@ -1,7 +1,6 @@
 import 'package:chatin/module_chat/index.dart';
 import 'package:chatin/module_chatlist/chatslist_bloc/index.dart';
 import 'package:chatin/module_chatlist/components_chatslist/index.dart';
-import 'package:chatin/module_chatlist/models/index.dart';
 import 'package:chatin/module_common/models/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +17,6 @@ class ChatsListRoot extends StatefulWidget{
 
 class _ChatsListRootState extends State<ChatsListRoot>{
   List<Chat> _chats = [];
-  List<ChatMetadata> _chatsMetadata = [];
   Map<String,PersonUser> _persons = {};
 
   @override
@@ -30,8 +28,11 @@ class _ChatsListRootState extends State<ChatsListRoot>{
   blocListener(BuildContext context, ChatsListState state){
       if(state is ChatsListChatsLoadedState){
         _chats = state.chats;
-        _chatsMetadata = state.chatsMetadata;
         _persons = state.persons;
+      }
+
+      if(state is ChatsListDeleteState){
+        _chats = _chats.where((element) => element.id!=state.chat.id).toList();
       }
   }
 
@@ -54,6 +55,7 @@ class _ChatsListRootState extends State<ChatsListRoot>{
             shrinkWrap: true,
             children: _chats.map((chat) => 
               ChatsListItem(
+                key: Key(chat.id),
                 chat: chat,
                 persons: _persons
               )

@@ -82,7 +82,8 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/appIcon.png"
+  remove_alpha_ios: true
+  image_path: "assets/icons/todo_logo.png"
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -94,6 +95,7 @@ flutter:
 
   assets:
     - assets/images/back1.png
+    - assets/icons/todo_logo.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -1,6 +1,6 @@
 {
-    "name": "chatin",
-    "short_name": "chatin",
+    "name": "TO-DO",
+    "short_name": "to-do",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

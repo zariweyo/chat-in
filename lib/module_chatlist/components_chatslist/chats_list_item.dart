@@ -1,9 +1,11 @@
 import 'package:chatin/module_chat/chatroom_bloc/chat_provider.dart';
 import 'package:chatin/module_chat/models/chat.dart';
-import 'package:chatin/module_chatlist/models/chat_metadata.dart';
+import 'package:chatin/module_chatlist/chatslist_bloc/chats_list_bloc.dart';
+import 'package:chatin/module_chatlist/chatslist_bloc/chats_list_events.dart';
 import 'package:chatin/module_chatlist/components_chatslist/index.dart';
 import 'package:chatin/module_common/models/person_user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 class ChatsListItem extends StatelessWidget{
   final Chat chat;
   final Map<String,PersonUser> persons;
@@ -25,6 +27,9 @@ class ChatsListItem extends StatelessWidget{
           context,
           MaterialPageRoute(builder: (context) => ChatProvider(key: Key(chat.id), chat: chat,)),
         );
+      },
+      onLongPress: (){
+        BlocProvider.of<ChatsListBloc>(context).add(ChatsListModalChatEvent(context, chat));
       },
       child: Card(
         shadowColor: Colors.black,
@@ -48,10 +53,6 @@ class ChatsListItem extends StatelessWidget{
                 child: ChatsListInfo(
                   chat:chat
                 )
-              ),
-              Expanded(
-                flex:1,
-                child: ChatsListIcon(chat,persons),
               ),
               Expanded(
                 flex:1,

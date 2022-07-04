@@ -15,26 +15,20 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.green[100],
         elevation: 0,
         actions: const [],
         title: const ChatHeader(),
         leading: const MBack(
-          color: Colors.white,
+          color: Colors.black,
         ),
+        foregroundColor: Colors.black,
       ),
       body:Container(
         
         decoration: BoxDecoration(
           color:Colors.green[100],
-          image: DecorationImage(
-            image: const AssetImage("assets/images/back1.png"),
-            colorFilter: 
-              ColorFilter.mode(Colors.black.withOpacity(0.1), 
-              BlendMode.dstATop
-            ),
-            fit: BoxFit.cover,
-          ),
+          
         ),
         child:SafeArea(
           child: Stack(

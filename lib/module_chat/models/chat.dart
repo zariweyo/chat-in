@@ -29,6 +29,7 @@ class Chat extends ChatHive{
     if(map["totalAcumulativeMessages"]!=null) chat.totalAcumulativeMessages = map["totalAcumulativeMessages"];
     if(map["lastUserId"]!=null) chat.lastUserId = map["lastUserId"];
     if(map["name"]!=null) chat.name = map["name"];
+    if(map["enabled"]!=null) chat.enabled = map["enabled"];
     if(map["users"]!=null) chat.users = (map["users"] as List<dynamic>).map((e)=> e.toString()).toList();
     if(map["created"]!=null) chat.created = DateTime.fromMillisecondsSinceEpoch(map["created"],isUtc:true);
     if(map["lastMessageTime"]!=null) chat.lastMessageTime = DateTime.fromMillisecondsSinceEpoch(map["lastMessageTime"],isUtc:true);

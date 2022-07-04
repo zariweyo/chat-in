@@ -30,5 +30,7 @@
     "chat_advice_info": "Este Chat está encriptado con algoritmo RSA entre los conversadores.\n\nAdemás, los mensajes leidos (doble check) son automáticamente borrados.\n\nNi el desarrollador de la app puede desencriptarlos, al estar las claves sólo almacenadas en tu dispositivo.\n\nTu privacidad es importante para esta app.",
     "message_version_deprecated": "Has recibido un mensaje de tipo desconocido. Actualiza para poder ver el mensaje correctamente",
     "write_a_message": "Escribe un mensaje",
-    "you": "Tú"
+    "you": "Tú",
+    "delete_chat": "Eliminar lista",
+    "really_delete_chat": "¿Realmente quieres eliminar esta lista?"
 }

@@ -1,10 +1,7 @@
-import 'package:chatin/module_chatlist/chatslist_bloc/index.dart';
 import 'package:chatin/module_chatlist/components_chatslist/index.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../components_chatslist/chat_list_header.dart';
+import '../components_chatslist/chats_list_header.dart';
 
 
 class ChatsList extends StatefulWidget{
@@ -21,19 +18,20 @@ class _ChatsListState extends State<ChatsList>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.green[100],
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.green[100],
         elevation: 0,
         actions: const [],
         title: const ChatListHeader(),
+        foregroundColor: Colors.black,
       ),
       body: Center(
         child: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/images/back1.png"),
-                  fit: BoxFit.fitHeight,
+                  image: AssetImage("assets/icons/todo_logo.png"),
+                  fit: BoxFit.scaleDown,
                   opacity: 0.1),
             ),
             child: const ChatsListRoot()

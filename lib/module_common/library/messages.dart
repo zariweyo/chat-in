@@ -87,11 +87,7 @@ class UtilMessages
   
 
   static showErrorDialog(BuildContext context, String errorMessage,{VoidCallback? onFinish, bool blocked=false}) {
-    // TODO control Globals.errorIsShowing
-    // Original if (!Globals.errorIsShowing && _errorMessage != null && _errorMessage.length > 0) {
-    // Original  Globals.errorIsShowing = true;
     if (errorMessage.isNotEmpty) {
-      //Globals.errorIsShowing = true;
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -101,7 +97,6 @@ class UtilMessages
             errorMessage: errorMessage,
             onPressed: (){
               if(onFinish!=null) onFinish();
-              //Globals.errorIsShowing = false;
               Navigator.of(context).pop();
             },
             

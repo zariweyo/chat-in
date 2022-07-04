@@ -24,19 +24,14 @@ class _ChatHeaderState extends State<ChatListHeader>{
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        //color: Colors.white
-      ),
-      child: Row(
-        children: [
-          const Expanded(
-            child: Text("CHAT-IN")
-          ),
-          IconButton(onPressed: addNewList, icon: const Icon(Icons.add_circle))
-          //_buttonClean()
-        ]
-      )
+    return Row(
+      children: [
+        const Expanded(
+          child: Text("TO-DO")
+        ),
+        IconButton(onPressed: addNewList, icon: const Icon(Icons.add_circle))
+        //_buttonClean()
+      ]
     );
   }
 

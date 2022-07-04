@@ -103,7 +103,7 @@ class HiveController{
   }
 
   List<Chat> getChats(){
-    return chatBox.values.map((e) => Chat.fromMap(e.toMap())).toList();
+    return chatBox.values.where((element) => element.enabled!=null && element.enabled).map((e) => Chat.fromMap(e.toMap())).toList();
   }
 
   StreamTransformer<BoxEvent, ChatMessage> get chatMessageTransformer => 
@@ -116,7 +116,8 @@ class HiveController{
   StreamTransformer<BoxEvent, Chat> get chatTransformer => 
     StreamTransformer.fromHandlers(handleData: (BoxEvent ev, EventSink<Chat> chats){
       if(!ev.deleted){
-        chats.add(Chat.fromMap(ev.value.toMap()));
+        Chat chat = Chat.fromMap(ev.value.toMap());
+        chats.add(chat);
       }
     });
 

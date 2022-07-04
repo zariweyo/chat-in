@@ -24,13 +24,14 @@ class ChatHiveAdapter extends TypeAdapter<ChatHive> {
       ..totalMessages = fields[4] as int
       ..totalAcumulativeMessages = fields[5] as int
       ..lastUserId = fields[6] as String
-      ..name = fields[7] as String;
+      ..name = fields[7] as String
+      ..enabled = fields[8] as bool?;
   }
 
   @override
   void write(BinaryWriter writer, ChatHive obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -46,7 +47,9 @@ class ChatHiveAdapter extends TypeAdapter<ChatHive> {
       ..writeByte(6)
       ..write(obj.lastUserId)
       ..writeByte(7)
-      ..write(obj.name);
+      ..write(obj.name)
+      ..writeByte(8)
+      ..write(obj.enabled);
   }
 
   @override

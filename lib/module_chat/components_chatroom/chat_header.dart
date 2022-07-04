@@ -45,7 +45,7 @@ class _ChatHeaderState extends State<ChatHeader>{
       child:AutoSizeText(remotePerson.name??="",
         maxLines: 2,
         style: const TextStyle(
-          color:Colors.white
+          color:Colors.black
         ),
       )
     );
@@ -77,7 +77,7 @@ class _ChatHeaderState extends State<ChatHeader>{
       child:AutoSizeText(text,
         maxLines: 1,
         style: const TextStyle(
-          color:Colors.white,
+          color:Colors.black,
           fontSize: 9
         ),
       )

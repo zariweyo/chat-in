@@ -22,12 +22,6 @@ class _ChatsListInfoState extends State<ChatsListInfo> {
   late Chat currentchat;
   TextEditingController controller = TextEditingController();
 
-  String subTitle(BuildContext context){
-    String head = "";
-    
-    return "..";
-  }
-
   @override
   initState(){
     currentchat = widget.chat;
@@ -68,7 +62,7 @@ class _ChatsListInfoState extends State<ChatsListInfo> {
                     BlocProvider.of<ChatsListBloc>(context).add(ChatsListEditEvent(widget.chat));
                   },
                 ):
-                
+
                 Row(
                   children:[
                     Expanded(
@@ -81,15 +75,9 @@ class _ChatsListInfoState extends State<ChatsListInfo> {
                     ),
                     IconButton(onPressed: () {
                       BlocProvider.of<ChatsListBloc>(context).add(ChatsListSaveEvent(currentchat));
-                    }, icon: Icon(Icons.check))
+                    }, icon: const Icon(Icons.check))
                   ]
                 )
-              ,
-              AutoSizeText(subTitle(context),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              //AutoSizeText(lastMessage.message)
             ]
           )
     );

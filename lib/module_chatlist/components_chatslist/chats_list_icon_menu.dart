@@ -26,17 +26,6 @@ class ChatsListIconMenuState extends State<ChatsListIconMenu> with TickerProvide
       curve: Curves.fastOutSlowIn,
     );
 
-    // TODO messagesPendingChange
-    /* 
-    Globals.messagesPendingChange.listen((value) {
-      if(value!=null){
-        if(mounted){
-          setState(() {
-            _hasMessages = value;
-          });
-        }
-      }
-    }); */
     super.initState();
   }
 

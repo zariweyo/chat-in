@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:chatin/module_chat/index.dart';
 import 'package:chatin/module_common/models/index.dart';
 import 'package:chatin/module_hive/adapters/chat_message_hive.dart';

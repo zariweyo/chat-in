@@ -13,7 +13,7 @@ enum ReceiveListDataState {
 }
 
 class ChatsListController{
-  final List<Chat> _chats = [];
+  List<Chat> _chats = [];
   StreamSubscription? streamHiveChat;
 
   final HiveController hiveController = GetIt.I.get<HiveController>();
@@ -28,6 +28,11 @@ class ChatsListController{
   }
 
   onListDataReceived(Chat chat){
+    if(chat.enabled==false){
+      _chats = _chats.where((element) => element.id!=chat.id).toList();
+      return;
+    }
+
     int index = _chats.indexWhere((element) => element.id==chat.id);
     if(index<0){
       _chats.add(chat);
@@ -51,9 +56,14 @@ class ChatsListController{
     return hiveController.updateChat(chat);
   }
 
+  Future<void> deleteChat(Chat chat){
+    chat.enabled = false;
+    return hiveController.updateChat(chat);
+  }
+
   loadChats() async{
     List<Chat> chats = hiveController.getChats();
-    _chats.addAll(chats);
+    _chats = chats;
     receiveListDataState.add(ReceiveListDataState.chatsLoaded);
   }
 

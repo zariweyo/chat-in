@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:chatin/module_chat/models/chat.dart';
-import 'package:chatin/module_chatlist/models/chat_metadata.dart';
 import 'package:chatin/module_common/library/utils.dart';
 import 'package:flutter/material.dart';
 

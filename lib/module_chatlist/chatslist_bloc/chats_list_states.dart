@@ -25,3 +25,9 @@ class ChatsListSaveState extends ChatsListState {
   final Chat chat;
   ChatsListSaveState(this.chat) : super([chat]);
 }
+
+class ChatsListDeleteState extends ChatsListState {
+  final Chat chat;
+  ChatsListDeleteState(this.chat) : super([chat]);
+}
+

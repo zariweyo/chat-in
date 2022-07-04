@@ -29,11 +29,15 @@ class ChatHive extends HiveObject{
   @HiveField(7)
   String name = "";
 
+  @HiveField(8)
+  bool? enabled = true;
+
   toMap(){
     var data = {
       "id": id,
       "users": users,
       "name": name,
+      "enabled": enabled,
       "totalMessages": totalMessages,
       "totalAcumulativeMessages": totalAcumulativeMessages,
       "lastUserId": lastUserId,
