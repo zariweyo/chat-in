@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     
     return MaterialApp(
-      title: 'Rick and Morty',
+      title: 'TO-DO',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

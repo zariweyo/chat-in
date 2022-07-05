@@ -2,6 +2,7 @@ import 'package:chatin/module_chat/index.dart';
 import 'package:chatin/module_common/models/index.dart';
 import 'package:chatin/module_hive/adapters/chat_message_hive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -192,11 +193,11 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
         children: [
           SlidableAction(
             onPressed: (ctx) {
-              //BlocProvider.of<ChatBloc>(context).add(ChatMessageDeleteEvent(widget.message.id));
+              Clipboard.setData(ClipboardData(text: widget.message.message));
             },
             backgroundColor: Colors.transparent,
-            foregroundColor: Colors.red,
-            icon: Icons.device_unknown
+            foregroundColor: Colors.black,
+            icon: Icons.copy
           ),
           SlidableAction(
             onPressed: (ctx) {

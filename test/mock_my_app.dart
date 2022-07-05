@@ -11,7 +11,7 @@ class MockMyApp extends StatelessWidget {
     return MediaQuery(
         data: const MediaQueryData(),
         child: MaterialApp(
-                title: 'Rick and Morty',
+                title: 'TO-DO',
                 theme: ThemeData(
                         primarySwatch: Colors.blue,
                 ),
