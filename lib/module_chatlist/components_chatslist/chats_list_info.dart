@@ -68,7 +68,7 @@ class _ChatsListInfoState extends State<ChatsListInfo> {
                     Expanded(
                       child: TextField(
                         controller: controller,
-                        maxLines: 3,
+                        maxLines: 2,
                         onChanged: (newName) {
                           currentchat.name = newName;
                         },

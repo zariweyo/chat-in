@@ -34,7 +34,7 @@ class _ChatMessageTextState extends State<ChatMessageText> {
     return 
       TextSpan(
         children: parts.map((stringRender) {
-          LaunchDetectorType detectorType = LaunchDetector.detector(stringRender);
+          LaunchDetectorType detectorType = LaunchDetector.detector(stringRender.trim());
           if(detectorType!=LaunchDetectorType.none){
             return TextSpan( 
               text: "$stringRender ",
@@ -45,17 +45,27 @@ class _ChatMessageTextState extends State<ChatMessageText> {
                   ..onTap = () {
                     switch(detectorType){
                       case LaunchDetectorType.phone:
-                        launchUrl(Uri.parse("tel:$stringRender"),
+                        launchUrl(Uri.parse("tel:${stringRender.trim()}"),
                           mode: LaunchMode.externalApplication
                         );
                         break;
                       case LaunchDetectorType.url:
-                        launchUrl(Uri.parse(stringRender),
+                        String uriRenderSt = stringRender.trim();
+                        
+                        if(!uriRenderSt.toLowerCase().startsWith("//")){
+                          uriRenderSt = "http:$uriRenderSt";
+                        }
+
+                        if(!uriRenderSt.toLowerCase().startsWith("http")){
+                          uriRenderSt = "http://$uriRenderSt";
+                        }
+
+                        launchUrl(Uri.parse(uriRenderSt),
                           mode: LaunchMode.externalApplication
                         );
                         break;
                       case LaunchDetectorType.email:
-                        launchUrl(Uri.parse("mailto:$stringRender"),
+                        launchUrl(Uri.parse("mailto:${stringRender.trim()}"),
                           mode: LaunchMode.externalApplication
                         );
                         break;

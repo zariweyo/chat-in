@@ -8,6 +8,13 @@ enum LaunchDetectorType {
 
 class LaunchDetector {
   static LaunchDetectorType detector(String str){
+    String regexEmailPattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    var regEmailExp = RegExp(regexEmailPattern);
+
+    if (regEmailExp.hasMatch(str)) {
+      return LaunchDetectorType.email;
+    }
+
     String regexUriPattern = r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+';
     var regUriExp = RegExp(regexUriPattern);
     if(regUriExp.hasMatch(str)){
@@ -21,13 +28,6 @@ class LaunchDetector {
 
     if (regPhoneExp1.hasMatch(str) || regPhoneExp2.hasMatch(str)) {
       return LaunchDetectorType.phone;
-    }
-
-    String regexEmailPattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-    var regEmailExp = RegExp(regexEmailPattern);
-
-    if (regEmailExp.hasMatch(str)) {
-      return LaunchDetectorType.email;
     }
 
     return LaunchDetectorType.none;
