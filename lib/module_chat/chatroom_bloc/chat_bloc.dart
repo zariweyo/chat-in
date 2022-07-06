@@ -36,18 +36,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         message="";
         emit(ChatMessageSended());
       }
-    }else if (event is ChatIWritingMessage) {
-      //yield* _mapSetWriting(event.isWriting);
     }else if (event is ChatSetMessage) {
       message=event.message;
     }else if (event is ChatUpdateMessages) {
       emit(ChatMessagesLoaded(chatRoomController.messages));
     }else if (event is ChatInitialMessagesEvent) {
       emit(ChatMessagesLoaded(chatRoomController.messages));
-    }else if (event is ChatSomeboyIsWritingMessage) {
-      //yield ChatMessagesWritingChange([event.chatWriting]);
-    }else if (event is ChatMessagesPersonReloadEvent) {
-      //yield ChatMessagesPersonReloaded(event.person);
     }else if (event is ChatSetDateTimeEvent) {
       emit(ChatSetDateTimeState(event.dateTime));
     }else if (event is ChatMessageDeleteEvent) {
@@ -61,19 +55,28 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       List<ChatMessage> messageIds = chatRoomController.messageSelected(event.message);
       emit(ChatMessagesSelectedState(messageIds));
     }else if (event is ChatMessagesSelectedActionEvent) {
-      if(event.action == ChatMessagesSelectedActionType.clean){
+      if(event.action == ChatBardActionType.clean){
         chatRoomController.clearMessagesSelected();
         emit(ChatMessagesSelectedState(const []));
-      }else if(event.action == ChatMessagesSelectedActionType.share){
+      }else if(event.action == ChatBardActionType.share){
         Share.share(chatRoomController.selectedMessages.map((msg) => msg.message).join("\n"));
         chatRoomController.clearMessagesSelected();
         emit(ChatMessagesSelectedState(const []));  
-      }else if(event.action == ChatMessagesSelectedActionType.copy){
+      }else if(event.action == ChatBardActionType.copy){
         Clipboard.setData(ClipboardData(text: chatRoomController.selectedMessages.map((msg) => msg.message).join("\n")));
         chatRoomController.clearMessagesSelected();
         emit(ChatMessagesSelectedState(const []));
+      }else if(event.action == ChatBardActionType.edit){
+        if(chatRoomController.selectedMessages.isNotEmpty){
+          emit(ChatEditMessageState(chatRoomController.selectedMessages.first));
+          chatRoomController.clearMessagesSelected();
+          emit(ChatMessagesSelectedState(const []));
+        }
       }
-
+    }else if (event is ChatMessagesEditingActionEvent) {
+      if(event.action == ChatBardActionType.save){
+        emit(ChatMessagesEditingActionState(event.action));
+      }
     }
   }
 

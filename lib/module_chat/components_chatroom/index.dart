@@ -5,5 +5,5 @@ export 'chat_text_field.dart';
 export 'chat_message_item.dart';
 export 'chat_writting_item.dart';
 export 'chat_date_item.dart';
-export 'chat_message_text.dart';
-export 'chat_selected_actions.dart';
+export 'item_text/index.dart';
+export 'bar_actions/index.dart';

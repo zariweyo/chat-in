@@ -6,6 +6,12 @@ import 'package:rxdart/subjects.dart';
 
 import './index.dart';
 
+enum ChatBarType {
+  none,
+  selectedBar,
+  editingBar
+}
+
 class ChatFoot extends StatefulWidget{
   const ChatFoot({Key? key}) : super(key: key);
 
@@ -15,23 +21,32 @@ class ChatFoot extends StatefulWidget{
 }
 
 class _ChatFootState extends State<ChatFoot>{
-  bool _isSelectedActive = false;
+  ChatBarType chatBarType = ChatBarType.none;
   BehaviorSubject<bool> onSendCleanEvent = BehaviorSubject<bool>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocSelector<ChatBloc,ChatState,bool>(
+    return BlocSelector<ChatBloc,ChatState,ChatBarType>(
       selector: (state) {
-        if(state is ChatMessagesSelectedState) {
-          _isSelectedActive = state.messages.isNotEmpty;
+        if(state is ChatMessagesSelectedState && state.messages.isNotEmpty) {
+          chatBarType = ChatBarType.selectedBar;
+        }if(state is ChatEditMessageState) {
+          chatBarType = ChatBarType.editingBar;
+        }if(state is ChatSaveMessageState) {
+          chatBarType = ChatBarType.none;
         }
-        return _isSelectedActive;
+        
+        return chatBarType;
       },
-      builder: (ctx,isSelected) => 
-        isSelected? 
-          const ChatSelectedBarActions()
-        : 
-          Row(
+      builder: (ctx,chatBarTypeSelected) {
+        switch(chatBarTypeSelected){
+          case ChatBarType.selectedBar:
+            return const ChatBarActionsSelected();
+          case ChatBarType.editingBar:
+            return const ChatBarActionsEditing();
+          case ChatBarType.none:
+          default:
+            return Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children:[
               Expanded(
@@ -45,8 +60,9 @@ class _ChatFootState extends State<ChatFoot>{
                 }
               )
             ]
-          )
-    );
+          );
+        }
+    });
   }
 
 }
