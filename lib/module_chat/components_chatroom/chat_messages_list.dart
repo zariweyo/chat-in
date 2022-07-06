@@ -46,19 +46,20 @@ class _ChatMessagesListState extends State<ChatMessagesList>{
   blocListener(BuildContext context, ChatState state){
       if(state is ChatInitialState){
         localPerson = state.localPerson;
-      }
-
-      if(state is ChatMessagesLoaded){
+      }else if(state is ChatMessagesLoaded){
         messages = state.messages;
-      }
-
-      if(state is ChatMessageSended){
+      }else if(state is ChatMessageSended){
         scrollController.animateTo(
           0,
           duration: const Duration(seconds: 2),
           curve: Curves.fastOutSlowIn,
         );
       }
+  }
+
+  bool blocListenerWhen(ChatState previous, ChatState current) {
+    bool refresh = [ChatInitialState,ChatMessagesLoaded,ChatMessageSended].contains(current.runtimeType);
+    return refresh;
   }
 
   Widget timeRow(DateTime dateTime){
@@ -122,6 +123,7 @@ class _ChatMessagesListState extends State<ChatMessagesList>{
 
     return BlocConsumer<ChatBloc,ChatState>(
       listener: blocListener,
+      buildWhen: blocListenerWhen,
       builder: (ctx,stat) => 
       RectGetter(
         key: listViewKey,

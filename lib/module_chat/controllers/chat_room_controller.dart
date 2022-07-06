@@ -14,6 +14,7 @@ enum ReceiveDataState {
 class ChatRoomController{
 
   final List<ChatMessage> _messages = [];
+  final List<ChatMessage> _selectedMessages = [];
   Chat chat;
   bool isWriting=false;
   final PersonUser localPerson = GetIt.I.get<PersonUserRepository>().user;
@@ -21,6 +22,7 @@ class ChatRoomController{
   final PersonUser remotePerson;
 
   List<ChatMessage> get messages => _messages..sort((a,b) => b.time.compareTo(a.time));
+  List<ChatMessage> get selectedMessages => _selectedMessages..sort((a,b) => a.time.compareTo(b.time));
   BehaviorSubject<ReceiveDataState> receiveDataState = BehaviorSubject<ReceiveDataState>();
 
   ChatRoomController({
@@ -50,6 +52,18 @@ class ChatRoomController{
     hiveController.updateMessage(message);
   }
 
+  List<ChatMessage> messageSelected(ChatMessage message){
+    if(_selectedMessages.contains(message)){
+      _selectedMessages.removeWhere((element) => element.id==message.id);
+    }else{
+      _selectedMessages.add(message);
+    }
+    return _selectedMessages;
+  }
+
+  clearMessagesSelected(){
+    _selectedMessages.clear();
+  }
 
   ValueStream<ReceiveDataState> get onReceiveDataState => receiveDataState.stream;
 

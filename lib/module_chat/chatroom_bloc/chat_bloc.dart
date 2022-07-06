@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:chatin/module_chat/models/index.dart';
 import 'package:chatin/module_common/models/index.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'index.dart';
 
@@ -55,6 +57,23 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }else if (event is ChatSaveMessageEvent) {
       chatRoomController.updateMessage(event.message);
       emit(ChatSaveMessageState(event.message));
+    }else if (event is ChatMessageSelectedEvent) {
+      List<ChatMessage> messageIds = chatRoomController.messageSelected(event.message);
+      emit(ChatMessagesSelectedState(messageIds));
+    }else if (event is ChatMessagesSelectedActionEvent) {
+      if(event.action == ChatMessagesSelectedActionType.clean){
+        chatRoomController.clearMessagesSelected();
+        emit(ChatMessagesSelectedState(const []));
+      }else if(event.action == ChatMessagesSelectedActionType.share){
+        Share.share(chatRoomController.selectedMessages.map((msg) => msg.message).join("\n"));
+        chatRoomController.clearMessagesSelected();
+        emit(ChatMessagesSelectedState(const []));  
+      }else if(event.action == ChatMessagesSelectedActionType.copy){
+        Clipboard.setData(ClipboardData(text: chatRoomController.selectedMessages.map((msg) => msg.message).join("\n")));
+        chatRoomController.clearMessagesSelected();
+        emit(ChatMessagesSelectedState(const []));
+      }
+
     }
   }
 

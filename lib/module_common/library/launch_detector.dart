@@ -8,8 +8,9 @@ enum LaunchDetectorType {
 
 class LaunchDetector {
   static LaunchDetectorType detector(String str){
-    Uri? tryPar = Uri.tryParse(str);
-    if(tryPar!=null && tryPar.isAbsolute){
+    String regexUriPattern = r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+';
+    var regUriExp = RegExp(regexUriPattern);
+    if(regUriExp.hasMatch(str)){
       return LaunchDetectorType.url;
     }
 

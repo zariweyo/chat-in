@@ -35,6 +35,11 @@ class ChatMessageItemStyle{
   }
 }
 
+enum SelectedState {
+  none,
+  selected
+}
+
 class ChatMessageItem extends StatefulWidget{
   final ChatMessage message;
   final PersonUser localPerson;
@@ -51,6 +56,8 @@ class ChatMessageItem extends StatefulWidget{
 class _ChatMessageItemState extends State<ChatMessageItem> {
   late ChatMessageItemStyle _style;
   bool _isMyMessage = false;
+  SelectedState selectedState = SelectedState.none;
+  bool anySelected = false;
 
   @override
   initState(){
@@ -181,47 +188,75 @@ class _ChatMessageItemState extends State<ChatMessageItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      key: Key(widget.message.id),
-      startActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        dismissible: DismissiblePane(
-          onDismissed: () {
-            BlocProvider.of<ChatBloc>(context).add(ChatMessageDeleteEvent(widget.message.id));
+    return 
+    BlocSelector<ChatBloc,ChatState,SelectedState?>(
+      selector: (state) {
+        if(state is ChatMessagesSelectedState) {
+          anySelected = state.messages.isNotEmpty;
+          if(state.messages.where((ms) => ms.id == widget.message.id).isNotEmpty){
+            selectedState = SelectedState.selected;
+          }else {
+            selectedState = SelectedState.none;
           }
-        ),
-        children: [
-          SlidableAction(
-            onPressed: (ctx) {
-              Clipboard.setData(ClipboardData(text: widget.message.message));
-            },
-            backgroundColor: Colors.transparent,
-            foregroundColor: Colors.black,
-            icon: Icons.copy
-          ),
-          SlidableAction(
-            onPressed: (ctx) {
-              BlocProvider.of<ChatBloc>(context).add(ChatEditMessageEvent(widget.message));
-            },
-            backgroundColor: Colors.transparent,
-            foregroundColor: Colors.black,
-            icon: Icons.edit
+        }
+        return selectedState;
+      },
+      builder: (ctx,selectedState) => 
+        GestureDetector(
+          key: Key(widget.message.id),
+          onLongPress: () {
+            BlocProvider.of<ChatBloc>(context).add(ChatMessageSelectedEvent(widget.message));
+          },
+          onTap: () {
+            if(anySelected) BlocProvider.of<ChatBloc>(context).add(ChatMessageSelectedEvent(widget.message));
+          },
+          child: Slidable(
+            key: Key(widget.message.id),
+            startActionPane: ActionPane(
+              motion: const ScrollMotion(),
+              dismissible: DismissiblePane(
+                onDismissed: () {
+                  BlocProvider.of<ChatBloc>(context).add(ChatMessageDeleteEvent(widget.message.id));
+                }
+              ),
+              children: [
+                SlidableAction(
+                  onPressed: (ctx) {
+                    Clipboard.setData(ClipboardData(text: widget.message.message));
+                  },
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: Colors.black,
+                  icon: Icons.copy
+                ),
+                SlidableAction(
+                  onPressed: (ctx) {
+                    BlocProvider.of<ChatBloc>(context).add(ChatEditMessageEvent(widget.message));
+                  },
+                  backgroundColor: Colors.transparent,
+                  foregroundColor: Colors.black,
+                  icon: Icons.edit
+                )
+              ],
+            ),
+            child:Container(
+              padding: const EdgeInsets.all(5),
+              margin: EdgeInsets.only(
+                left: _style.left,
+                top:10,
+                right: _style.right,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: widget.message.visible? 
+                  selectedState==SelectedState.selected? 
+                    Colors.green.shade300
+                      : _style.backgroudColor
+                    : Colors.grey
+              ),
+              child: _print(context)
+            )
           )
-        ],
-      ),
-      child:Container(
-        padding: const EdgeInsets.all(5),
-        margin: EdgeInsets.only(
-          left: _style.left,
-          top:10,
-          right: _style.right,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: widget.message.visible? _style.backgroudColor: Colors.grey
-        ),
-        child: _print(context)
-      )
-    );
+        )
+      );
   }
 }

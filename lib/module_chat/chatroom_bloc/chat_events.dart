@@ -1,6 +1,13 @@
 import 'package:chatin/module_chat/index.dart';
 import 'package:chatin/module_common/models/index.dart';
 
+
+enum ChatMessagesSelectedActionType {
+  none,
+  clean,
+  share,
+  copy
+}
 abstract class ChatEvent {
   const ChatEvent([List props = const []]);
 }
@@ -53,6 +60,16 @@ class ChatMessageDeleteEvent extends ChatEvent {
   ChatMessageDeleteEvent(this.messageId) : super([messageId]);
 }
 
+class ChatMessageSelectedEvent extends ChatEvent {
+  final ChatMessage message;
+
+  ChatMessageSelectedEvent(this.message) : super([message]);
+}
+
+class ChatMessagesSelectedActionEvent extends ChatEvent {
+  final ChatMessagesSelectedActionType action;
+  ChatMessagesSelectedActionEvent(this.action) : super([action]);
+}
 
 class ChatSetDateTimeEvent extends ChatEvent {
   final DateTime dateTime;

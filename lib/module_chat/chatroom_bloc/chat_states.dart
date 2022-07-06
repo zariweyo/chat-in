@@ -59,3 +59,9 @@ class ChatSaveMessageState extends ChatState{
 
   ChatSaveMessageState(this.message) : super([message]);
 }
+
+class ChatMessagesSelectedState extends ChatState {
+  final List<ChatMessage> messages;
+
+  ChatMessagesSelectedState(this.messages) : super([messages]);
+}

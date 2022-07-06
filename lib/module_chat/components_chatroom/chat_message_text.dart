@@ -29,9 +29,9 @@ class _ChatMessageTextState extends State<ChatMessageText> {
     super.initState();
   }
 
-  printRichText(){
-    List<String> parts = currentMessage.message.split(" ");
-    return SelectableText.rich(
+  TextSpan printRichText(String message){
+    List<String> parts = message.split(RegExp(r' '));
+    return 
       TextSpan(
         children: parts.map((stringRender) {
           LaunchDetectorType detectorType = LaunchDetector.detector(stringRender);
@@ -45,13 +45,19 @@ class _ChatMessageTextState extends State<ChatMessageText> {
                   ..onTap = () {
                     switch(detectorType){
                       case LaunchDetectorType.phone:
-                        launchUrl(Uri.parse("tel:$stringRender"));
+                        launchUrl(Uri.parse("tel:$stringRender"),
+                          mode: LaunchMode.externalApplication
+                        );
                         break;
                       case LaunchDetectorType.url:
-                        launchUrl(Uri.parse(stringRender));
+                        launchUrl(Uri.parse(stringRender),
+                          mode: LaunchMode.externalApplication
+                        );
                         break;
                       case LaunchDetectorType.email:
-                        launchUrl(Uri.parse("mailto:$stringRender"));
+                        launchUrl(Uri.parse("mailto:$stringRender"),
+                          mode: LaunchMode.externalApplication
+                        );
                         break;
                       case LaunchDetectorType.none:
                       default:
@@ -64,8 +70,17 @@ class _ChatMessageTextState extends State<ChatMessageText> {
           return TextSpan( 
             text: "$stringRender ");
         }).toList()
+      );
+  }
+
+  Widget printRichTextAll(){
+    List<String> lines = currentMessage.message.split("\n");
+
+    return SelectableText.rich(
+      TextSpan(
+        children: lines.map((e) => printRichText("$e\n")).toList()
       ),
-      textAlign: TextAlign.left,
+      textAlign: TextAlign.left
     );
   }
 
@@ -104,7 +119,7 @@ class _ChatMessageTextState extends State<ChatMessageText> {
           ]
         )
       :
-        printRichText()
+        printRichTextAll()
     );
   }
 }
