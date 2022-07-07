@@ -28,12 +28,8 @@ class _ChatFootState extends State<ChatFoot>{
   Widget build(BuildContext context) {
     return BlocSelector<ChatBloc,ChatState,ChatBarType>(
       selector: (state) {
-        if(state is ChatMessagesSelectedState && state.messages.isNotEmpty) {
-          chatBarType = ChatBarType.selectedBar;
-        }if(state is ChatEditMessageState) {
-          chatBarType = ChatBarType.editingBar;
-        }if(state is ChatSaveMessageState) {
-          chatBarType = ChatBarType.none;
+        if(state is ChatBarState) {
+          chatBarType = state.type;
         }
         
         return chatBarType;

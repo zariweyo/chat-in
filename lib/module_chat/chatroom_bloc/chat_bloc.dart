@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:chatin/module_chat/index.dart';
 import 'package:chatin/module_chat/models/index.dart';
 import 'package:chatin/module_common/models/index.dart';
 import 'package:flutter/services.dart';
@@ -48,29 +49,36 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       chatRoomController.deleteMessage(event.messageId);
     }else if (event is ChatEditMessageEvent) {
       emit(ChatEditMessageState(event.message));
+      emit(ChatBarState(ChatBarType.editingBar));
     }else if (event is ChatSaveMessageEvent) {
       chatRoomController.updateMessage(event.message);
       emit(ChatSaveMessageState(event.message));
+      emit(ChatBarState(ChatBarType.none));
     }else if (event is ChatMessageSelectedEvent) {
       List<ChatMessage> messageIds = chatRoomController.messageSelected(event.message);
       emit(ChatMessagesSelectedState(messageIds));
+      emit(ChatBarState(ChatBarType.selectedBar));
     }else if (event is ChatMessagesSelectedActionEvent) {
       if(event.action == ChatBardActionType.clean){
         chatRoomController.clearMessagesSelected();
         emit(ChatMessagesSelectedState(const []));
+        emit(ChatBarState(ChatBarType.none));
       }else if(event.action == ChatBardActionType.share){
         Share.share(chatRoomController.selectedMessages.map((msg) => msg.message).join("\n"));
         chatRoomController.clearMessagesSelected();
         emit(ChatMessagesSelectedState(const []));  
+        emit(ChatBarState(ChatBarType.none));
       }else if(event.action == ChatBardActionType.copy){
         Clipboard.setData(ClipboardData(text: chatRoomController.selectedMessages.map((msg) => msg.message).join("\n")));
         chatRoomController.clearMessagesSelected();
         emit(ChatMessagesSelectedState(const []));
+        emit(ChatBarState(ChatBarType.none));
       }else if(event.action == ChatBardActionType.edit){
         if(chatRoomController.selectedMessages.isNotEmpty){
           emit(ChatEditMessageState(chatRoomController.selectedMessages.first));
           chatRoomController.clearMessagesSelected();
           emit(ChatMessagesSelectedState(const []));
+          emit(ChatBarState(ChatBarType.editingBar));
         }
       }
     }else if (event is ChatMessagesEditingActionEvent) {

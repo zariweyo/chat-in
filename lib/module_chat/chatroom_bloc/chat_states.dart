@@ -72,3 +72,9 @@ class ChatMessagesEditingActionState extends ChatState {
   ChatMessagesEditingActionState(this.action) : super([action]);
 }
 
+class ChatBarState extends ChatState {
+  final ChatBarType type;
+  ChatBarState(this.type) : super([type]);
+}
+
+
