@@ -1,3 +1,4 @@
+import 'package:chatin/module_hive/adapters/chat_message_field_hive.dart';
 import 'package:chatin/module_hive/controllers/hive_controller.dart';
 import 'package:hive/hive.dart';
 
@@ -83,6 +84,9 @@ class ChatMessageHive extends HiveObject{
   @HiveField(12)
   bool visible = true;
 
+  @HiveField(13)
+  List<ChatMessageFieldHive>? fields = [];
+
 
   Map<String,dynamic> toMap({
     ChatMessageState? newState
@@ -102,6 +106,7 @@ class ChatMessageHive extends HiveObject{
       "time": time.toUtc().millisecondsSinceEpoch,
       "cipherData": cipherData,
       "visible": visible,
+      "fields": fields?.map((e) => e.toMap()).toList(),
     };
   }
 

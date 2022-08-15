@@ -1,5 +1,6 @@
 import 'package:chatin/module_chat/index.dart';
 import 'package:chatin/module_common/library/launch_detector.dart';
+import 'package:chatin/module_hive/adapters/chat_message_field_hive.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -65,15 +66,50 @@ class ChatMessageRichText extends StatelessWidget{
       );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    List<String> lines = message.message.split("\n");
+  printSelectable(String messageStr){
+    List<String> lines = messageStr.split("\n");
 
     return SelectableText.rich(
       TextSpan(
         children: lines.map((e) => printRichText("$e\n")).toList()
       ),
       textAlign: TextAlign.left
+    );
+  }
+
+  printNum(ChatMessageFieldHive fieldNum){
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.greenAccent,
+        borderRadius: BorderRadius.circular(5)
+      ),
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.only(left: 2),
+      child: SelectableText(
+        fieldNum.value,
+        textAlign: TextAlign.right,
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold
+        ),
+      )
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    List<ChatMessageFieldHive> fields = message.fields ?? [];
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: printSelectable(message.message),
+        ),
+        ...fields.map((e) => printNum(e)).toList()
+      ],
     );
   }
 

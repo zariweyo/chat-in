@@ -1,3 +1,4 @@
+import 'package:chatin/module_hive/adapters/chat_message_field_hive.dart';
 import 'package:chatin/module_hive/adapters/chat_message_hive.dart';
 import 'package:uuid/uuid.dart';
 
@@ -46,9 +47,32 @@ class ChatMessage extends ChatMessageHive{
     if(map["cipherData"]!=null) chatMessage.cipherData = (map["cipherData"] as List<dynamic>).map((e)=> e.toString()).toList();
     if(map["cipherData64"]!=null) chatMessage.cipherData64 = (map["cipherData64"] as List<dynamic>).map((e)=> e.toString()).toList();
     if(map["visible"]!=null) chatMessage.visible = map["visible"];
+    if(map["fields"]!=null) chatMessage.fields = (map["fields"] as List<dynamic>).map((e)=> ChatMessageFieldHive.fromMap(e)).toList();
 
 
     return chatMessage;
+  }
+
+  addField(ChatMessageFieldType type){
+    fields = fields??[];
+
+    switch(type){
+      case ChatMessageFieldType.none:
+        break;
+      case ChatMessageFieldType.num:
+        assert(fields!.where((element) => element.type == ChatMessageFieldType.num).isEmpty);
+        fields?.add(ChatMessageFieldHive.newNumField());
+        break;
+      case ChatMessageFieldType.image:
+        break;
+      case ChatMessageFieldType.audio:
+        break;
+      case ChatMessageFieldType.video:
+        break;
+      case ChatMessageFieldType.text:
+        break;
+    }
+    
   }
 
   @override
@@ -56,23 +80,11 @@ class ChatMessage extends ChatMessageHive{
     ChatMessageState? newState
   }){
 
-    return {
-      "id": id,
-      "chatId": chatId,
-      "fromUserId": fromUserId,
-      "toUserId": toUserId,
-      "message": message,
-      "repeatCount": repeatCount,
-      "fingerRSA": fingerRSA,
-      "fingerRSA64": fingerRSA64,
-      "state": newState!=null? newState.toString().split(".")[1] : state.toString().split(".")[1],
-      "type": type.toString().split(".")[1],
-      "encrypType": encrypType.toString().split(".")[1],
-      "time": time.toUtc().millisecondsSinceEpoch,
-      "cipherData": cipherData,
-      "cipherData64": cipherData64,
-      "visible": visible,
-    };
+    Map<String,dynamic> map = super.toMap(newState:newState);
+    map["cipherData"] = cipherData;
+    map["cipherData64"] = cipherData64;
+
+    return map;
   }
 
   Map<String,dynamic> toMapState(){

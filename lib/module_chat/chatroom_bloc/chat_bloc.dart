@@ -1,18 +1,14 @@
 import 'dart:async';
 import 'package:chatin/module_chat/index.dart';
-import 'package:chatin/module_chat/models/index.dart';
 import 'package:chatin/module_common/models/index.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
 
-import 'index.dart';
-
-
-
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   late ChatRoomController chatRoomController;
   late String message="";
+  ChatMessage? currentChatMessage;
   StreamSubscription<ReceiveDataState>? onReceiveDataSuscription;
 
   ChatBloc(Chat chat, PersonUser localPerson, PersonUser remotePerson) : super(ChatInitialState(chat, localPerson, remotePerson)){
@@ -48,8 +44,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }else if (event is ChatMessageDeleteEvent) {
       chatRoomController.deleteMessage(event.messageId);
     }else if (event is ChatEditMessageEvent) {
-      emit(ChatEditMessageState(event.message));
-      emit(ChatBarState(ChatBarType.editingBar));
+      currentChatMessage = event.message;
+      editChatMessage(emit);
     }else if (event is ChatSaveMessageEvent) {
       chatRoomController.updateMessage(event.message);
       emit(ChatSaveMessageState(event.message));
@@ -57,34 +53,48 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }else if (event is ChatMessageSelectedEvent) {
       List<ChatMessage> messageIds = chatRoomController.messageSelected(event.message);
       emit(ChatMessagesSelectedState(messageIds));
-      emit(ChatBarState(ChatBarType.selectedBar));
+      if(messageIds.isEmpty){
+        emit(ChatBarState(ChatBarType.none));
+      }else{
+        emit(ChatBarState(ChatBarType.selectedBar));
+      }
+      
     }else if (event is ChatMessagesSelectedActionEvent) {
-      if(event.action == ChatBardActionType.clean){
+      if(event.action == ChatBarActionType.clean){
         chatRoomController.clearMessagesSelected();
         emit(ChatMessagesSelectedState(const []));
         emit(ChatBarState(ChatBarType.none));
-      }else if(event.action == ChatBardActionType.share){
+      }else if(event.action == ChatBarActionType.share){
         Share.share(chatRoomController.selectedMessages.map((msg) => msg.message).join("\n"));
         chatRoomController.clearMessagesSelected();
         emit(ChatMessagesSelectedState(const []));  
         emit(ChatBarState(ChatBarType.none));
-      }else if(event.action == ChatBardActionType.copy){
+      }else if(event.action == ChatBarActionType.copy){
         Clipboard.setData(ClipboardData(text: chatRoomController.selectedMessages.map((msg) => msg.message).join("\n")));
         chatRoomController.clearMessagesSelected();
         emit(ChatMessagesSelectedState(const []));
         emit(ChatBarState(ChatBarType.none));
-      }else if(event.action == ChatBardActionType.edit){
+      }else if(event.action == ChatBarActionType.edit){
         if(chatRoomController.selectedMessages.isNotEmpty){
-          emit(ChatEditMessageState(chatRoomController.selectedMessages.first));
-          chatRoomController.clearMessagesSelected();
-          emit(ChatMessagesSelectedState(const []));
-          emit(ChatBarState(ChatBarType.editingBar));
+          currentChatMessage = chatRoomController.selectedMessages.first;
+          editChatMessage(emit);
         }
       }
     }else if (event is ChatMessagesEditingActionEvent) {
-      if(event.action == ChatBardActionType.save){
+      if(event.action == ChatBarEditActionType.save){
+        emit(ChatMessagesEditingActionState(event.action));
+      }else if(event.action == ChatBarEditActionType.newNumField){
         emit(ChatMessagesEditingActionState(event.action));
       }
+    }
+  }
+
+  void editChatMessage(Function(ChatState) emit){
+    if(currentChatMessage != null){
+      emit(ChatEditMessageState(currentChatMessage!));
+      chatRoomController.clearMessagesSelected();
+      emit(ChatMessagesSelectedState(const []));
+      emit(ChatBarState(ChatBarType.editingBar));
     }
   }
 

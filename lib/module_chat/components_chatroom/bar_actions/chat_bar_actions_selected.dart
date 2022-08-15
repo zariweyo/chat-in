@@ -18,7 +18,7 @@ class _ChatBarActionsSelectedState extends State<ChatBarActionsSelected>{
 
   bool _hasOnlyOneSelected = true;
 
-  genericSelectedAction(ChatBardActionType action){
+  genericSelectedAction(ChatBarActionType action){
     BlocProvider.of<ChatBloc>(context).add(ChatMessagesSelectedActionEvent(action));
   }
 
@@ -35,17 +35,17 @@ class _ChatBarActionsSelectedState extends State<ChatBarActionsSelected>{
         ChatBarActionsBase(
             children: [
               ChatBarActionsButton(
-                action: () => genericSelectedAction(ChatBardActionType.clean), 
+                action: () => genericSelectedAction(ChatBarActionType.clean), 
                 iconData: Icons.close),
               ChatBarActionsButton(
-                action: () => genericSelectedAction(ChatBardActionType.share), 
+                action: () => genericSelectedAction(ChatBarActionType.share), 
                 iconData: Icons.share),
               ChatBarActionsButton(
-                action: () => genericSelectedAction(ChatBardActionType.copy), 
+                action: () => genericSelectedAction(ChatBarActionType.copy), 
                 iconData: Icons.copy),
               ChatBarActionsButton(
                 hide: !onlyOneSelected,
-                action: () => genericSelectedAction(ChatBardActionType.edit), 
+                action: () => genericSelectedAction(ChatBarActionType.edit), 
                 iconData: Icons.edit)
             ]
         )

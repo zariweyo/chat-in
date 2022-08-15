@@ -29,13 +29,14 @@ class ChatMessageHiveAdapter extends TypeAdapter<ChatMessageHive> {
       ..fingerRSA = fields[9] as String
       ..repeatCount = fields[10] as int
       ..cipherData = (fields[11] as List).cast<String>()
-      ..visible = fields[12] as bool;
+      ..visible = fields[12] as bool
+      ..fields = (fields[13] as List?)?.cast<ChatMessageFieldHive>();
   }
 
   @override
   void write(BinaryWriter writer, ChatMessageHive obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(14)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -61,7 +62,9 @@ class ChatMessageHiveAdapter extends TypeAdapter<ChatMessageHive> {
       ..writeByte(11)
       ..write(obj.cipherData)
       ..writeByte(12)
-      ..write(obj.visible);
+      ..write(obj.visible)
+      ..writeByte(13)
+      ..write(obj.fields);
   }
 
   @override

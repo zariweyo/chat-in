@@ -1,4 +1,5 @@
 import 'package:chatin/module_chat/index.dart';
+import 'package:chatin/module_hive/adapters/chat_message_field_hive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,8 +32,10 @@ class _ChatMessageEditTextState extends State<ChatMessageEditText> {
   }
 
   blocListener(BuildContext context, ChatState state){
-      if(state is ChatMessagesEditingActionState && state.action == ChatBardActionType.save){
+      if(state is ChatMessagesEditingActionState && state.action == ChatBarEditActionType.save){
         saveAction();
+      }else if(state is ChatMessagesEditingActionState && state.action == ChatBarEditActionType.newNumField){
+        currentMessage.addField(ChatMessageFieldType.num);
       }
   }
 

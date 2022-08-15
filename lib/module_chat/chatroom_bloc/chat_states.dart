@@ -67,7 +67,7 @@ class ChatMessagesSelectedState extends ChatState {
 }
 
 class ChatMessagesEditingActionState extends ChatState {
-  final ChatBardActionType action;
+  final ChatBarEditActionType action;
 
   ChatMessagesEditingActionState(this.action) : super([action]);
 }

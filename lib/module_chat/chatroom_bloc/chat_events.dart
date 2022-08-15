@@ -2,14 +2,19 @@ import 'package:chatin/module_chat/index.dart';
 import 'package:chatin/module_common/models/index.dart';
 
 
-enum ChatBardActionType {
+enum ChatBarActionType {
   none,
   clean,
   share,
   copy,
   edit,
-  save,
   cancel
+}
+
+enum ChatBarEditActionType {
+  none,
+  save,
+  newNumField
 }
 abstract class ChatEvent {
   const ChatEvent([List props = const []]);
@@ -70,12 +75,12 @@ class ChatMessageSelectedEvent extends ChatEvent {
 }
 
 class ChatMessagesSelectedActionEvent extends ChatEvent {
-  final ChatBardActionType action;
+  final ChatBarActionType action;
   ChatMessagesSelectedActionEvent(this.action) : super([action]);
 }
 
 class ChatMessagesEditingActionEvent extends ChatEvent {
-  final ChatBardActionType action;
+  final ChatBarEditActionType action;
   ChatMessagesEditingActionEvent(this.action) : super([action]);
 }
 

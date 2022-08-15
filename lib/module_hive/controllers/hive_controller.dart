@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:chatin/module_chat/index.dart';
 import 'package:chatin/module_common/models/person_user.dart';
 import 'package:chatin/module_hive/adapters/chat_hive.dart';
+import 'package:chatin/module_hive/adapters/chat_message_field_hive.dart';
 import 'package:chatin/module_hive/adapters/chat_message_hive.dart';
 import 'package:chatin/module_hive/adapters/chat_metadata_hive.dart';
 import 'package:chatin/repositories/personuser_repository.dart';
@@ -19,6 +20,9 @@ class HiveController{
   static const int encrypTypeHiveAdapterType = 4;
   static const int chatMessageTypeHiveAdapterType = 5;
   static const int chatMessageStateHiveAdapterType = 6;
+  static const int chatMessageFieldHiveAdapterType = 7;
+  static const int chatMessageFieldTypeHiveAdapterType = 8;
+
 
   late Box chatBox;
   late Box<ChatMessageHive> chatMessageBox;
@@ -49,6 +53,8 @@ class HiveController{
     Hive.registerAdapter(ChatMessageStateAdapter());
     Hive.registerAdapter(ChatMessageTypeAdapter());
     Hive.registerAdapter(EncrypTypeAdapter());
+    Hive.registerAdapter(ChatMessageFieldHiveAdapter());
+    Hive.registerAdapter(ChatMessageFieldTypeAdapter());
       
   }
 
